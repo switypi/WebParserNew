@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="WebParserModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="WebParserModelStoreContainer">
+          <EntitySet Name="ComplianceMaster" EntityType="WebParserModel.Store.ComplianceMaster" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CurrScan" EntityType="WebParserModel.Store.CurrScan" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MasterPlugins" EntityType="WebParserModel.Store.MasterPlugins" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ScanMaster" EntityType="WebParserModel.Store.ScanMaster" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserProfiles" EntityType="WebParserModel.Store.UserProfiles" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_CurrScan_ScanMaster" Association="WebParserModel.Store.FK_CurrScan_ScanMaster">
+            <End Role="ScanMaster" EntitySet="ScanMaster" />
+            <End Role="CurrScan" EntitySet="CurrScan" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ComplianceMaster">
+          <Key>
+            <PropertyRef Name="QID" />
+          </Key>
+          <Property Name="QID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PluginId" Type="int" Nullable="false" />
+          <Property Name="ComplianceCheckID" Type="nvarchar" MaxLength="150" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="RiskFactor" Type="varchar" MaxLength="10" />
+          <Property Name="Reportable" Type="bit" Nullable="false" />
+          <Property Name="Category1" Type="varchar" MaxLength="50" />
+          <Property Name="Category2" Type="varchar" MaxLength="50" />
+          <Property Name="Category3" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CurrScan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="ScanID" Type="int" Nullable="false" />
+          <Property Name="SubScanID" Type="int" Nullable="false" />
+          <Property Name="ReportHost" Type="nvarchar" Nullable="false" MaxLength="150" />
+          <Property Name="Port" Type="int" Nullable="false" />
+          <Property Name="PluginID" Type="int" Nullable="false" />
+          <Property Name="Compliance" Type="bit" Nullable="false" />
+          <Property Name="ComplianceResult" Type="varchar" MaxLength="50" />
+          <Property Name="ComplianceActualValue" Type="nvarchar(max)" />
+          <Property Name="ComplianceCheckID" Type="nvarchar" MaxLength="150" />
+          <Property Name="ComplianceOutput" Type="nvarchar(max)" />
+          <Property Name="CompliancePolicyValue" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="ExploitAvailable" Type="bit" Nullable="false" />
+          <Property Name="ExploitabilityEase" Type="varchar" MaxLength="150" />
+          <Property Name="ExploitedByMalware" Type="bit" Nullable="false" />
+          <Property Name="RiskFactor" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="SeeAlso" Type="varchar" MaxLength="150" />
+          <Property Name="Solution" Type="varchar" MaxLength="10" />
+          <Property Name="Synopsis" Type="varchar" MaxLength="150" />
+          <Property Name="PluginOutput" Type="varchar(max)" />
+          <Property Name="PluginOutputReportable" Type="bit" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="MasterPlugins">
+          <Key>
+            <PropertyRef Name="QID" />
+          </Key>
+          <Property Name="QID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PluginID" Type="int" Nullable="false" />
+          <Property Name="Synopsis" Type="varchar" MaxLength="150" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="Reportable" Type="bit" Nullable="false" />
+          <Property Name="PluginOutPut" Type="varchar(max)" />
+          <Property Name="PluginOutputReportable" Type="bit" Nullable="false" />
+          <Property Name="RiskFactor" Type="varchar" MaxLength="10" />
+          <Property Name="Category1" Type="varchar" MaxLength="50" />
+          <Property Name="Category2" Type="varchar" MaxLength="50" />
+          <Property Name="Category3" Type="varchar" MaxLength="50" />
+          <Property Name="Solution" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ScanMaster">
+          <Key>
+            <PropertyRef Name="ScanId" />
+          </Key>
+          <Property Name="ScanId" Type="int" Nullable="false" />
+          <Property Name="SubScanId" Type="int" Nullable="false" />
+          <Property Name="ClientName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ScanName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ScanDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfiles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="Admin" Type="bit" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <Association Name="FK_CurrScan_ScanMaster">
+          <End Role="ScanMaster" Type="WebParserModel.Store.ScanMaster" Multiplicity="1" />
+          <End Role="CurrScan" Type="WebParserModel.Store.CurrScan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScanMaster">
+              <PropertyRef Name="ScanId" />
+            </Principal>
+            <Dependent Role="CurrScan">
+              <PropertyRef Name="ScanID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WebParserModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="WebParserEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="ComplianceMasters" EntityType="WebParserModel.ComplianceMaster" />
+          <EntitySet Name="CurrScans" EntityType="WebParserModel.CurrScan" />
+          <EntitySet Name="MasterPlugins" EntityType="WebParserModel.MasterPlugin" />
+          <EntitySet Name="ScanMasters" EntityType="WebParserModel.ScanMaster" />
+          <EntitySet Name="UserProfiles" EntityType="WebParserModel.UserProfile" />
+          <AssociationSet Name="FK_CurrScan_ScanMaster" Association="WebParserModel.FK_CurrScan_ScanMaster">
+            <End Role="ScanMaster" EntitySet="ScanMasters" />
+            <End Role="CurrScan" EntitySet="CurrScans" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ComplianceMaster">
+          <Key>
+            <PropertyRef Name="QID" />
+          </Key>
+          <Property Name="QID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="PluginId" Type="Int32" Nullable="false" />
+          <Property Name="ComplianceCheckID" Type="String" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="RiskFactor" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="Reportable" Type="Boolean" Nullable="false" />
+          <Property Name="Category1" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Category2" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Category3" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="CurrScan">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="ScanID" Type="Int32" Nullable="false" />
+          <Property Name="SubScanID" Type="Int32" Nullable="false" />
+          <Property Name="ReportHost" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="Port" Type="Int32" Nullable="false" />
+          <Property Name="PluginID" Type="Int32" Nullable="false" />
+          <Property Name="Compliance" Type="Boolean" Nullable="false" />
+          <Property Name="ComplianceResult" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ComplianceActualValue" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ComplianceCheckID" Type="String" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="ComplianceOutput" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CompliancePolicyValue" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ExploitAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="ExploitabilityEase" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="ExploitedByMalware" Type="Boolean" Nullable="false" />
+          <Property Name="RiskFactor" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="SeeAlso" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="Solution" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="Synopsis" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="PluginOutput" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="PluginOutputReportable" Type="Boolean" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ScanMaster" Relationship="WebParserModel.FK_CurrScan_ScanMaster" FromRole="CurrScan" ToRole="ScanMaster" />
+        </EntityType>
+        <EntityType Name="MasterPlugin">
+          <Key>
+            <PropertyRef Name="QID" />
+          </Key>
+          <Property Name="QID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="PluginID" Type="Int32" Nullable="false" />
+          <Property Name="Synopsis" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="Reportable" Type="Boolean" Nullable="false" />
+          <Property Name="PluginOutPut" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="PluginOutputReportable" Type="Boolean" Nullable="false" />
+          <Property Name="RiskFactor" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="Category1" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Category2" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Category3" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Solution" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="ScanMaster">
+          <Key>
+            <PropertyRef Name="ScanId" />
+          </Key>
+          <Property Name="ScanId" Type="Int32" Nullable="false" />
+          <Property Name="SubScanId" Type="Int32" Nullable="false" />
+          <Property Name="ClientName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ScanName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ScanDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="CurrScans" Relationship="WebParserModel.FK_CurrScan_ScanMaster" FromRole="ScanMaster" ToRole="CurrScan" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="Admin" Type="Boolean" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <Association Name="FK_CurrScan_ScanMaster">
+          <End Role="ScanMaster" Type="WebParserModel.ScanMaster" Multiplicity="1" />
+          <End Role="CurrScan" Type="WebParserModel.CurrScan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScanMaster">
+              <PropertyRef Name="ScanId" />
+            </Principal>
+            <Dependent Role="CurrScan">
+              <PropertyRef Name="ScanID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WebParserModelStoreContainer" CdmEntityContainer="WebParserEntities">
+          <EntitySetMapping Name="ComplianceMasters">
+            <EntityTypeMapping TypeName="WebParserModel.ComplianceMaster">
+              <MappingFragment StoreEntitySet="ComplianceMaster">
+                <ScalarProperty Name="QID" ColumnName="QID" />
+                <ScalarProperty Name="PluginId" ColumnName="PluginId" />
+                <ScalarProperty Name="ComplianceCheckID" ColumnName="ComplianceCheckID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="RiskFactor" ColumnName="RiskFactor" />
+                <ScalarProperty Name="Reportable" ColumnName="Reportable" />
+                <ScalarProperty Name="Category1" ColumnName="Category1" />
+                <ScalarProperty Name="Category2" ColumnName="Category2" />
+                <ScalarProperty Name="Category3" ColumnName="Category3" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CurrScans">
+            <EntityTypeMapping TypeName="WebParserModel.CurrScan">
+              <MappingFragment StoreEntitySet="CurrScan">
+                <ScalarProperty Name="ScanID" ColumnName="ScanID" />
+                <ScalarProperty Name="SubScanID" ColumnName="SubScanID" />
+                <ScalarProperty Name="ReportHost" ColumnName="ReportHost" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="PluginID" ColumnName="PluginID" />
+                <ScalarProperty Name="Compliance" ColumnName="Compliance" />
+                <ScalarProperty Name="ComplianceResult" ColumnName="ComplianceResult" />
+                <ScalarProperty Name="ComplianceActualValue" ColumnName="ComplianceActualValue" />
+                <ScalarProperty Name="ComplianceCheckID" ColumnName="ComplianceCheckID" />
+                <ScalarProperty Name="ComplianceOutput" ColumnName="ComplianceOutput" />
+                <ScalarProperty Name="CompliancePolicyValue" ColumnName="CompliancePolicyValue" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ExploitAvailable" ColumnName="ExploitAvailable" />
+                <ScalarProperty Name="ExploitabilityEase" ColumnName="ExploitabilityEase" />
+                <ScalarProperty Name="ExploitedByMalware" ColumnName="ExploitedByMalware" />
+                <ScalarProperty Name="RiskFactor" ColumnName="RiskFactor" />
+                <ScalarProperty Name="SeeAlso" ColumnName="SeeAlso" />
+                <ScalarProperty Name="Solution" ColumnName="Solution" />
+                <ScalarProperty Name="Synopsis" ColumnName="Synopsis" />
+                <ScalarProperty Name="PluginOutput" ColumnName="PluginOutput" />
+                <ScalarProperty Name="PluginOutputReportable" ColumnName="PluginOutputReportable" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MasterPlugins">
+            <EntityTypeMapping TypeName="WebParserModel.MasterPlugin">
+              <MappingFragment StoreEntitySet="MasterPlugins">
+                <ScalarProperty Name="QID" ColumnName="QID" />
+                <ScalarProperty Name="PluginID" ColumnName="PluginID" />
+                <ScalarProperty Name="Synopsis" ColumnName="Synopsis" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Reportable" ColumnName="Reportable" />
+                <ScalarProperty Name="PluginOutPut" ColumnName="PluginOutPut" />
+                <ScalarProperty Name="PluginOutputReportable" ColumnName="PluginOutputReportable" />
+                <ScalarProperty Name="RiskFactor" ColumnName="RiskFactor" />
+                <ScalarProperty Name="Category1" ColumnName="Category1" />
+                <ScalarProperty Name="Category2" ColumnName="Category2" />
+                <ScalarProperty Name="Category3" ColumnName="Category3" />
+                <ScalarProperty Name="Solution" ColumnName="Solution" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScanMasters">
+            <EntityTypeMapping TypeName="WebParserModel.ScanMaster">
+              <MappingFragment StoreEntitySet="ScanMaster">
+                <ScalarProperty Name="ScanId" ColumnName="ScanId" />
+                <ScalarProperty Name="SubScanId" ColumnName="SubScanId" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="ScanName" ColumnName="ScanName" />
+                <ScalarProperty Name="ScanDate" ColumnName="ScanDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="WebParserModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfiles">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
