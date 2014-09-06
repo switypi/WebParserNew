@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataFunction\LoginFunctions.cs" />
+    <Compile Include="DataFunction\OperationFunctions.cs" />
     <Compile Include="DataModel\ComplianceMaster.cs">
       <DependentUpon>WebParser.tt</DependentUpon>
     </Compile>
@@ -77,18 +78,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WebParser.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\ImportXMLDataDTO.cs" />
     <Compile Include="Model\LoginDTO.cs" />
+    <Compile Include="Model\ScanMasterDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="DataModel\WebParser.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>WebParser.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
     <None Include="DataModel\WebParser.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WebParser.edmx</DependentUpon>

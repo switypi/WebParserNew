@@ -14,5 +14,11 @@ namespace WebParser.DAL.Model
         public bool IsValidLogin { get; set; }
         [DataMember]
         public bool IsAdmin { get; set; }
+
+        [DataMember]
+        public string Password { get; set; }
+        [DataMember]
+        public string UserId { get; set; }
+
     }
 }

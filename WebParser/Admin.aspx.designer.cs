@@ -9,7 +9,9 @@
 
 namespace WebParser
 {
-    public partial class Contact
+
+    public partial class Admin
     {
+
     }
 }

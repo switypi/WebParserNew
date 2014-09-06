@@ -67,7 +67,12 @@ namespace WebParser
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if ( Session["UserName"] != null)
+            {
+                lblLoginName.Text = Session["UserName"] as string; ;
+                lblLoginName.Visible = true;
+                hypLogOut.Visible = true;
+            }
         }
     }
 }

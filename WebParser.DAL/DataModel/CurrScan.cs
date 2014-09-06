@@ -36,7 +36,5 @@ namespace WebParser.DAL.DataModel
         public string PluginOutput { get; set; }
         public bool PluginOutputReportable { get; set; }
         public int Id { get; set; }
-    
-        public virtual ScanMaster ScanMaster { get; set; }
     }
 }

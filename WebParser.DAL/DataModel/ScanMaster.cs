@@ -14,17 +14,12 @@ namespace WebParser.DAL.DataModel
     
     public partial class ScanMaster
     {
-        public ScanMaster()
-        {
-            this.CurrScans = new HashSet<CurrScan>();
-        }
-    
         public int ScanId { get; set; }
         public int SubScanId { get; set; }
         public string ClientName { get; set; }
         public string ScanName { get; set; }
         public System.DateTime ScanDate { get; set; }
-    
-        public virtual ICollection<CurrScan> CurrScans { get; set; }
+        public int Id { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -11,10 +11,6 @@
           <EntitySet Name="MasterPlugins" EntityType="WebParserModel.Store.MasterPlugins" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ScanMaster" EntityType="WebParserModel.Store.ScanMaster" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserProfiles" EntityType="WebParserModel.Store.UserProfiles" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_CurrScan_ScanMaster" Association="WebParserModel.Store.FK_CurrScan_ScanMaster">
-            <End Role="ScanMaster" EntitySet="ScanMaster" />
-            <End Role="CurrScan" EntitySet="CurrScan" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ComplianceMaster">
           <Key>
@@ -76,35 +72,25 @@
         </EntityType>
         <EntityType Name="ScanMaster">
           <Key>
-            <PropertyRef Name="ScanId" />
+            <PropertyRef Name="Id" />
           </Key>
           <Property Name="ScanId" Type="int" Nullable="false" />
           <Property Name="SubScanId" Type="int" Nullable="false" />
           <Property Name="ClientName" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="ScanName" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="ScanDate" Type="date" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="nvarchar" Nullable="false" MaxLength="10" />
         </EntityType>
         <EntityType Name="UserProfiles">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="UserId" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="12" />
+          <Property Name="UserId" Type="nvarchar" Nullable="false" MaxLength="12" />
+          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Admin" Type="bit" Nullable="false" />
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
-        <Association Name="FK_CurrScan_ScanMaster">
-          <End Role="ScanMaster" Type="WebParserModel.Store.ScanMaster" Multiplicity="1" />
-          <End Role="CurrScan" Type="WebParserModel.Store.CurrScan" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ScanMaster">
-              <PropertyRef Name="ScanId" />
-            </Principal>
-            <Dependent Role="CurrScan">
-              <PropertyRef Name="ScanID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
@@ -116,10 +102,6 @@
           <EntitySet Name="MasterPlugins" EntityType="WebParserModel.MasterPlugin" />
           <EntitySet Name="ScanMasters" EntityType="WebParserModel.ScanMaster" />
           <EntitySet Name="UserProfiles" EntityType="WebParserModel.UserProfile" />
-          <AssociationSet Name="FK_CurrScan_ScanMaster" Association="WebParserModel.FK_CurrScan_ScanMaster">
-            <End Role="ScanMaster" EntitySet="ScanMasters" />
-            <End Role="CurrScan" EntitySet="CurrScans" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ComplianceMaster">
           <Key>
@@ -161,7 +143,6 @@
           <Property Name="PluginOutput" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
           <Property Name="PluginOutputReportable" Type="Boolean" Nullable="false" />
           <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="ScanMaster" Relationship="WebParserModel.FK_CurrScan_ScanMaster" FromRole="CurrScan" ToRole="ScanMaster" />
         </EntityType>
         <EntityType Name="MasterPlugin">
           <Key>
@@ -182,36 +163,25 @@
         </EntityType>
         <EntityType Name="ScanMaster">
           <Key>
-            <PropertyRef Name="ScanId" />
+            <PropertyRef Name="Id" />
           </Key>
           <Property Name="ScanId" Type="Int32" Nullable="false" />
           <Property Name="SubScanId" Type="Int32" Nullable="false" />
           <Property Name="ClientName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="ScanName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="ScanDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="CurrScans" Relationship="WebParserModel.FK_CurrScan_ScanMaster" FromRole="ScanMaster" ToRole="CurrScan" />
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="UserId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="12" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="Admin" Type="Boolean" Nullable="false" />
           <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
         </EntityType>
-        <Association Name="FK_CurrScan_ScanMaster">
-          <End Role="ScanMaster" Type="WebParserModel.ScanMaster" Multiplicity="1" />
-          <End Role="CurrScan" Type="WebParserModel.CurrScan" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ScanMaster">
-              <PropertyRef Name="ScanId" />
-            </Principal>
-            <Dependent Role="CurrScan">
-              <PropertyRef Name="ScanID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -287,6 +257,8 @@
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
                 <ScalarProperty Name="ScanName" ColumnName="ScanName" />
                 <ScalarProperty Name="ScanDate" ColumnName="ScanDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
