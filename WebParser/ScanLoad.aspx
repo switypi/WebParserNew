@@ -31,7 +31,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                    OnSuccess(result);
+                    OnSuccess(result.d);
                 },
                 error: function (xhr, status, error) {
                     OnFailure(error);
@@ -40,7 +40,19 @@
         }
         function OnSuccess(dateTime) {
             if (dateTime) {
-                document.getElementById("currentDate").innerHTML = dateTime;
+               
+                if (dateTime.length > 0) {
+                    $("#MainContent_grdScanList").append("<tr><th>ScanID</th><th> Scan Name</th>  <th>Scan Date</th><th> Client Name</th></tr>");
+                    for (var i = 0; i < dateTime.length; i++) {
+
+                        $("#MainContent_grdScanList").append("<tr><td>" +
+                        dateTime[i].ScanID + "</td> <td>" +
+                        dateTime[i].ScanName + "</td> <td>" +
+                         dateTime[i].ScanDate + "</td> <td>" +
+                        dateTime[i].ClientName + "</td></tr>");
+                    }
+                }
+
             }
         }
         function OnFailure(error) {
@@ -109,15 +121,15 @@
     </div>
 
 
-    <div id="dvAdditionalScan" style="visibility: hidden">
-        <asp:GridView runat="server" ID="grdScanList" AutoGenerateColumns="true">
+    <div id="dvAdditionalScan" style="vertical-align:top">
+        <asp:GridView runat="server" BorderColor="SteelBlue" ID="grdScanList" OnLoad="grdScanList_Load">
             <Columns>
-                <asp:BoundField HeaderText="Scan Id" DataField="ScanId" />
+                <asp:BoundField HeaderText="Scan Id" DataField="ScanID" />
                 <asp:BoundField HeaderText="Scan Name" DataField="ScanName" />
                 <asp:BoundField HeaderText="Scan Date" DataField="ScanDate" />
                 <asp:BoundField HeaderText="Client Name" DataField="ClientName" />
             </Columns>
-            <EmptyDataTemplate>No records found.</EmptyDataTemplate>
+          <%--  <EmptyDataTemplate>No records found.</EmptyDataTemplate>--%>
         </asp:GridView>
     </div>
 

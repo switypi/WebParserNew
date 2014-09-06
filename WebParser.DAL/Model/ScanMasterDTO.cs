@@ -17,7 +17,7 @@ namespace WebParser.DAL.Model
         [DataMember]
         public string ScanName { get; set; }
         [DataMember]
-        public DateTime ScanDate { get; set; }
+        public string ScanDate { get; set; }
         [DataMember]
         public string ClientName { get; set; }
         [DataMember]

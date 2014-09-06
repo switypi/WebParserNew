@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -15,7 +16,12 @@ namespace WebParser
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!Page.IsPostBack)
+            {
+                List<ScanMasterDTO> scanMasters = new List<ScanMasterDTO>();
+                grdScanList.DataSource = scanMasters;
+                grdScanList.DataBind();
+            }
 
         }
 
@@ -83,11 +89,20 @@ namespace WebParser
         }
 
         [System.Web.Services.WebMethod]
-        public static void GetRecords()
+        //[ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static ScanMasterDTO[] GetRecords()
         {
             List<ScanMasterDTO> scanMasters = new List<ScanMasterDTO>();
             var obj = new WebParser.DAL.DataFunction.OperationFunctions();
             scanMasters = obj.GetPreviousScanResult(HttpContext.Current.Session["UserName"] as string);
+            
+            return scanMasters.ToArray();
+        }
+
+       
+
+        protected void grdScanList_Load(object sender, EventArgs e)
+        {
 
         }
 

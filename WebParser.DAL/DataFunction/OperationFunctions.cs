@@ -103,13 +103,13 @@ namespace WebParser.DAL.DataFunction
 
             using (var context = new WebParser.DAL.DataModel.WebParserEntities())
             {
-                scanMasterList = (from item in context.ScanMasters
-                                  where item.UserId == userId
-                                  select new ScanMasterDTO()
+                scanMasterList = (from item1 in context.ScanMasters
+                                  where item1.UserId == userId
+                                  select item1).ToList().Select(item => new ScanMasterDTO()
                                   {
                                       Id = item.Id,
                                       ClientName = item.ClientName,
-                                      ScanDate = item.ScanDate,
+                                      ScanDate = item.ScanDate.ToString(),
                                       ScanID = item.ScanId,
                                       ScanName = item.ScanName,
                                       SubScanID = item.SubScanId
