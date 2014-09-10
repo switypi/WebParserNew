@@ -31,12 +31,14 @@ namespace WebParser.DAL.DataFunction
 
             using (var context = new WebParser.DAL.DataModel.WebParserEntities())
             {
-                context.ScanMasters.Add(master);
+                
                 foreach (var item in inputDTOList)
                 {
                     CurrScan newItem = CreateCurrentScan(item, scanId, subScnaID);
-                    context.CurrScans.Add(newItem);
+                    master.CurrScans.Add(newItem);
+                    //context.CurrScans.Add(newItem);
                 }
+                context.ScanMasters.Add(master);
                 int value = 0;
                 try
                 {

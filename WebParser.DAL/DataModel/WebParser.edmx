@@ -4,13 +4,17 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="WebParserModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="WebParserModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="WebParserModelStoreContainer">
           <EntitySet Name="ComplianceMaster" EntityType="WebParserModel.Store.ComplianceMaster" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CurrScan" EntityType="WebParserModel.Store.CurrScan" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="MasterPlugins" EntityType="WebParserModel.Store.MasterPlugins" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ScanMaster" EntityType="WebParserModel.Store.ScanMaster" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserProfiles" EntityType="WebParserModel.Store.UserProfiles" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_CurrScan_ScanMaster" Association="WebParserModel.Store.FK_CurrScan_ScanMaster">
+            <End Role="ScanMaster" EntitySet="ScanMaster" />
+            <End Role="CurrScan" EntitySet="CurrScan" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ComplianceMaster">
           <Key>
@@ -44,14 +48,15 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="ExploitAvailable" Type="bit" Nullable="false" />
           <Property Name="ExploitabilityEase" Type="varchar" MaxLength="150" />
-          <Property Name="ExploitedByMalware" Type="bit" Nullable="false" />
-          <Property Name="RiskFactor" Type="varchar" Nullable="false" MaxLength="10" />
-          <Property Name="SeeAlso" Type="varchar" MaxLength="150" />
-          <Property Name="Solution" Type="varchar" MaxLength="10" />
-          <Property Name="Synopsis" Type="varchar" MaxLength="150" />
+          <Property Name="ExploitedByMalware" Type="bit" />
+          <Property Name="RiskFactor" Type="varchar" MaxLength="50" />
+          <Property Name="SeeAlso" Type="varchar(max)" />
+          <Property Name="Solution" Type="varchar(max)" />
+          <Property Name="Synopsis" Type="varchar(max)" />
           <Property Name="PluginOutput" Type="varchar(max)" />
           <Property Name="PluginOutputReportable" Type="bit" Nullable="false" />
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ScanMasterId" Type="int" />
         </EntityType>
         <EntityType Name="MasterPlugins">
           <Key>
@@ -91,8 +96,19 @@
           <Property Name="Admin" Type="bit" Nullable="false" />
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+        <Association Name="FK_CurrScan_ScanMaster">
+          <End Role="ScanMaster" Type="WebParserModel.Store.ScanMaster" Multiplicity="0..1" />
+          <End Role="CurrScan" Type="WebParserModel.Store.CurrScan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScanMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CurrScan">
+              <PropertyRef Name="ScanMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WebParserModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -102,6 +118,10 @@
           <EntitySet Name="MasterPlugins" EntityType="WebParserModel.MasterPlugin" />
           <EntitySet Name="ScanMasters" EntityType="WebParserModel.ScanMaster" />
           <EntitySet Name="UserProfiles" EntityType="WebParserModel.UserProfile" />
+          <AssociationSet Name="FK_CurrScan_ScanMaster" Association="WebParserModel.FK_CurrScan_ScanMaster">
+            <End Role="ScanMaster" EntitySet="ScanMasters" />
+            <End Role="CurrScan" EntitySet="CurrScans" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ComplianceMaster">
           <Key>
@@ -135,14 +155,16 @@
           <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="ExploitAvailable" Type="Boolean" Nullable="false" />
           <Property Name="ExploitabilityEase" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
-          <Property Name="ExploitedByMalware" Type="Boolean" Nullable="false" />
-          <Property Name="RiskFactor" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
-          <Property Name="SeeAlso" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
-          <Property Name="Solution" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
-          <Property Name="Synopsis" Type="String" MaxLength="150" Unicode="false" FixedLength="false" />
+          <Property Name="ExploitedByMalware" Type="Boolean" />
+          <Property Name="RiskFactor" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="SeeAlso" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Solution" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="Synopsis" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
           <Property Name="PluginOutput" Type="String" MaxLength="Max" Unicode="false" FixedLength="false" />
           <Property Name="PluginOutputReportable" Type="Boolean" Nullable="false" />
           <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ScanMasterId" />
+          <NavigationProperty Name="ScanMaster" Relationship="WebParserModel.FK_CurrScan_ScanMaster" FromRole="CurrScan" ToRole="ScanMaster" />
         </EntityType>
         <EntityType Name="MasterPlugin">
           <Key>
@@ -172,6 +194,7 @@
           <Property Name="ScanDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="CurrScans" Relationship="WebParserModel.FK_CurrScan_ScanMaster" FromRole="ScanMaster" ToRole="CurrScan" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
@@ -182,6 +205,18 @@
           <Property Name="Admin" Type="Boolean" Nullable="false" />
           <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
         </EntityType>
+        <Association Name="FK_CurrScan_ScanMaster">
+          <End Type="WebParserModel.ScanMaster" Role="ScanMaster" Multiplicity="0..1" />
+          <End Type="WebParserModel.CurrScan" Role="CurrScan" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScanMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CurrScan">
+              <PropertyRef Name="ScanMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -206,6 +241,7 @@
           <EntitySetMapping Name="CurrScans">
             <EntityTypeMapping TypeName="WebParserModel.CurrScan">
               <MappingFragment StoreEntitySet="CurrScan">
+                <ScalarProperty Name="ScanMasterId" ColumnName="ScanMasterId" />
                 <ScalarProperty Name="ScanID" ColumnName="ScanID" />
                 <ScalarProperty Name="SubScanID" ColumnName="SubScanID" />
                 <ScalarProperty Name="ReportHost" ColumnName="ReportHost" />

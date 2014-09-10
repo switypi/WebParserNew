@@ -7,11 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebParser
-{
-
-    public partial class Admin
-    {
-
+namespace WebParser {
+    
+    
+    public partial class Admin {
     }
 }

@@ -24,9 +24,9 @@ namespace WebParser.Account
             if (!Page.IsPostBack)
             {
                 Label lbl = this.Master.FindControl("lblLoginName") as Label;
-              
+
                 HyperLink link = this.Master.FindControl("hypLogOut") as HyperLink;
-             
+
 
                 lbl.Visible = false;
                 link.Visible = false;
@@ -57,10 +57,23 @@ namespace WebParser.Account
                 link.Visible = true;
                 Session["UserName"] = obj.UserId;
                 FormsAuthentication.SetAuthCookie(item.UserId, createPersistentCookie: false);
+                HyperLink rpt = this.Master.FindControl("HyperLink2") as HyperLink;
+                HyperLink scnLoad = this.Master.FindControl("HyperLink1") as HyperLink;
+                
                 if (!obj.IsAdmin)
-                    Response.Redirect("~/ScanLoad.aspx?Id="+obj.UserId);
+                {
+                    Response.Redirect("~/ScanLoad.aspx");
+                  
+                    rpt.Visible = true;
+                    scnLoad.Visible = false;
+
+                }
                 else
-                    Response.Redirect("~/Admin.aspx?Id=" + obj.UserId);
+                {
+                    Response.Redirect("~/Admin.aspx");
+                    rpt.Visible = true;
+                    scnLoad.Visible = true;
+                }
 
             }
         }

@@ -31,6 +31,15 @@ namespace WebParser {
         protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
+        /// dvNewScan control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel dvNewScan;
+        
+        /// <summary>
         /// lblClientName control.
         /// </summary>
         /// <remarks>
@@ -130,22 +139,13 @@ namespace WebParser {
         protected global::System.Web.UI.WebControls.Label lblUploadNewXmlFIle;
         
         /// <summary>
-        /// fileUpLoad control.
+        /// fileUpload1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fileUpLoad;
-        
-        /// <summary>
-        /// RequiredFieldValidator4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
+        protected global::System.Web.UI.WebControls.FileUpload fileUpload1;
         
         /// <summary>
         /// btnsave control.
@@ -164,6 +164,15 @@ namespace WebParser {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblmessage;
+        
+        /// <summary>
+        /// dvAdditionalScan control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel dvAdditionalScan;
         
         /// <summary>
         /// grdScanList control.

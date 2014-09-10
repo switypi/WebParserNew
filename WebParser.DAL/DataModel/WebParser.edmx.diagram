@@ -10,6 +10,7 @@
         <EntityTypeShape EntityType="WebParserModel.MasterPlugin" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WebParserModel.ScanMaster" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WebParserModel.UserProfile" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="WebParserModel.FK_CurrScan_ScanMaster" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
