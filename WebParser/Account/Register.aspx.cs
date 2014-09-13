@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Microsoft.AspNet.Membership.OpenAuth;
+
 using WebParser.DAL.Model;
 
 namespace WebParser.Account
@@ -18,6 +18,7 @@ namespace WebParser.Account
 
         protected void Button1_Click(object sender, EventArgs e)
         {
+
             LoginDTO item = new LoginDTO();
             item.Password = Password.Text;
             item.UserId = UserName.Text;
@@ -38,16 +39,25 @@ namespace WebParser.Account
                 Label lbl = this.Master.FindControl("lblLoginName") as Label;
                 lbl.Text = obj.UserId;
                 HyperLink link = this.Master.FindControl("hypLogOut") as HyperLink;
+                HyperLink scnLink = this.Master.FindControl("hypScn") as HyperLink;
                 link.Text = obj.UserId;
 
                 lbl.Visible = true;
                 link.Visible = true;
+
+                if (obj.IsAdmin)
+                {
+                    scnLink.Visible = true;
+                    Response.Redirect("~/Admin.aspx");
+                }
+                else
+                    Response.Redirect("~/ScanLoad.aspx");
                 //string continueUrl = RegisterUser.ContinueDestinationPageUrl;
                 //if (!OpenAuth.IsLocalUrl(continueUrl))
                 //{
                 //    continueUrl = "~/";
                 //}
-                Response.Redirect("~/ScanLoad.aspx?Id=" + item.UserId);
+
             }
         }
     }

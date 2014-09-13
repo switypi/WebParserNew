@@ -28,7 +28,7 @@ namespace WebParser.DAL.DataModel
         public string Description { get; set; }
         public bool ExploitAvailable { get; set; }
         public string ExploitabilityEase { get; set; }
-        public Nullable<bool> ExploitedByMalware { get; set; }
+        public bool ExploitedByMalware { get; set; }
         public string RiskFactor { get; set; }
         public string SeeAlso { get; set; }
         public string Solution { get; set; }

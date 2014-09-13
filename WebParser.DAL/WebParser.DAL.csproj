@@ -78,8 +78,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WebParser.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\CurrScanDTO.cs" />
     <Compile Include="Model\ImportXMLDataDTO.cs" />
     <Compile Include="Model\LoginDTO.cs" />
+    <Compile Include="Model\ReturnResultDTO.cs" />
     <Compile Include="Model\ScanMasterDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

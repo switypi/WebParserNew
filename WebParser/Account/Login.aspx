@@ -4,33 +4,84 @@
     <hgroup class="title">
         <h1><%: Title %>.</h1>
     </hgroup>
-    <section id="loginForm">
-        <h2>Use a local account to log in.</h2>
-        <fieldset>
-            <legend>Log in Form</legend>
-            <ol>
-                <li>
-                    <asp:Label ID="Label1" runat="server" AssociatedControlID="UserName">User name</asp:Label>
-                    <asp:TextBox runat="server" ID="UserName" />
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="UserName" CssClass="field-validation-error" ErrorMessage="The user name field is required." />
-                </li>
-                <li>
-                    <asp:Label ID="Label2" runat="server" AssociatedControlID="Password">Password</asp:Label>
-                    <asp:TextBox runat="server" ID="Password" TextMode="Password" />
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="Password" CssClass="field-validation-error" ErrorMessage="The password field is required." />
-                </li>
 
-            </ol>
-            <asp:Button ID="Button1" runat="server" OnClick="login_Click" Text="Log in" />
-        </fieldset>
+    <style type="text/css">
+        .overlay {
+            position: fixed;
+            z-index: 98;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            background-color: #aaa;
+            filter: alpha(opacity=80);
+            opacity: 0.8;
+        }
 
-        <asp:Label ID="lblErrorMessage" Visible="false" runat="server"></asp:Label>
+        .overlayContent {
+            z-index: 99;
+            margin: 250px auto;
+            width: 80px;
+            height: 80px;
+        }
 
-        <p>
-            <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register</asp:HyperLink>
-            if you don't have an account.
-        </p>
-    </section>
+            .overlayContent h2 {
+                font-size: 18px;
+                font-weight: bold;
+                color: #000;
+            }
 
+            .overlayContent img {
+                width: 80px;
+                height: 80px;
+            }
+    </style>
+
+    <asp:UpdatePanel ID="updtlog" runat="server" UpdateMode="Always">
+        <ContentTemplate>
+
+            <section id="loginForm">
+                <h2>Use a local account to log in.</h2>
+                <div style="width:20%">
+                    <fieldset>
+                        <legend>Log in Form</legend>
+                        <ol>
+                            <li>
+                                <asp:Label ID="Label1" runat="server" AssociatedControlID="UserName">User name</asp:Label>
+                                <asp:TextBox runat="server" ID="UserName" />
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="UserName" CssClass="field-validation-error" ErrorMessage="The user name field is required." />
+                            </li>
+                            <li>
+                                <asp:Label ID="Label2" runat="server" AssociatedControlID="Password">Password</asp:Label>
+                                <asp:TextBox runat="server" ID="Password" TextMode="Password" />
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="Password" CssClass="field-validation-error" ErrorMessage="The password field is required." />
+                            </li>
+
+                        </ol>
+                        <asp:Button ID="Button1" runat="server" OnClick="login_Click" Text="Log in" />
+                    </fieldset>
+                </div>
+
+                <asp:Label ID="lblErrorMessage" Visible="false" runat="server"></asp:Label>
+
+                <p>
+                    <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register</asp:HyperLink>
+                    if you don't have an account.
+       
+                </p>
+            </section>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+
+    <asp:UpdateProgress ID="updProgress"
+        AssociatedUpdatePanelID="updtlog"
+        runat="server">
+         <ProgressTemplate>
+            <div class="overlay" />
+            <div class="overlayContent">
+                <asp:Image ID="Image1" runat="server"   ImageUrl="~/Images/ImgLoader.gif" />
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
 
 </asp:Content>

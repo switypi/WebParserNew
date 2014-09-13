@@ -13,6 +13,15 @@ namespace WebParser {
     public partial class ScanLoad {
         
         /// <summary>
+        /// updtMaster control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updtMaster;
+        
+        /// <summary>
         /// Label2 control.
         /// </summary>
         /// <remarks>
@@ -145,7 +154,7 @@ namespace WebParser {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload fileUpload1;
+        protected global::AjaxControlToolkit.AsyncFileUpload fileUpload1;
         
         /// <summary>
         /// btnsave control.
@@ -182,5 +191,14 @@ namespace WebParser {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView grdScanList;
+        
+        /// <summary>
+        /// updProgress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdateProgress updProgress;
     }
 }

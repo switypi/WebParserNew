@@ -9,14 +9,13 @@
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
     <style type='text/css'>
         /* This style fixes the Radio Buttons */
-        input[type='radio']
-        {
+        input[type='radio'] {
             border: 1px solid #e2e2e2;
             background: #fff;
             color: #333;
@@ -26,8 +25,7 @@
             width: 20px;
         }
         /* This style makes label elements appear inline as AdamJanke mentioned */
-        label
-        {
+        label {
             width: auto;
             display: inline;
         }
@@ -35,7 +33,7 @@
 </head>
 <body>
     <form runat="server">
-        <ajaxtoolkit:toolkitscriptmanager runat="server">
+        <ajaxToolkit:ToolkitScriptManager runat="server">
             <Scripts>
                 <asp:ScriptReference Name="jquery" />
                 <asp:ScriptReference Name="jquery.ui.combined" />
@@ -50,14 +48,10 @@
                 <asp:ScriptReference Name="WebFormsBundle" />
 
             </Scripts>
-        </ajaxtoolkit:toolkitscriptmanager>
+        </ajaxToolkit:ToolkitScriptManager>
         <header>
             <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">
-                        <a runat="server" href="~/">your logo here</a>
-                    </p>
-                </div>
+
                 <div class="float-right">
                     <span>
 
@@ -68,25 +62,29 @@
                     <br />
 
                 </div>
-                <div>
-                    <span>
-                        <asp:HyperLink ID="HyperLink1" Visible="false" runat="server" Text="Scan Load"></asp:HyperLink>
-                    </span>
-                    <span style="margin-left: 1%">
-                        <asp:HyperLink ID="HyperLink2" Visible="false" runat="server" Text="Report"></asp:HyperLink>
-                    </span>
-                </div>
+
+            </div>
+
+            <div style="float: right; margin-right: 20%">
+                <span>
+                    <asp:HyperLink ID="hypScn" Visible="false" NavigateUrl="~/ScanLoad.aspx" runat="server" Text="Scan Load"></asp:HyperLink>
+                </span>
+                <span >
+                    <asp:HyperLink ID="hypRpt" Visible="false" runat="server" Text="Report"></asp:HyperLink>
+                </span>
+                <span>
+                    <asp:HyperLink ID="hypAdmin" Visible="false" runat="server" Text="Admin"></asp:HyperLink>
+                </span>
             </div>
         </header>
         <div id="body">
-            <%-- <asp:UpdatePanel ID="updtMaster" runat="server" UpdateMode="Always">
-                <ContentTemplate>--%>
+
+
             <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
             <section class="content-wrapper main-content clear-fix">
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>
-            <%--</ContentTemplate>
-            </asp:UpdatePanel>--%>
+
         </div>
         <footer>
             <div class="content-wrapper">

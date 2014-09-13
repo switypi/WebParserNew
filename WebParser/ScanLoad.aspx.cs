@@ -16,6 +16,7 @@ namespace WebParser
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if (!Page.IsPostBack)
             {
                 List<ScanMasterDTO> scanMasters = new List<ScanMasterDTO>();
@@ -29,6 +30,30 @@ namespace WebParser
                 {
                     PerformCustomAction();
                 }
+
+            }
+
+            if (bool.Parse(Session["IsAdmin"].ToString()))
+            {
+                HyperLink scnLoad = this.Master.FindControl("hypScn") as HyperLink;
+
+                HyperLink rptLink = this.Master.FindControl("hypRpt") as HyperLink;
+
+                HyperLink admn = this.Master.FindControl("hypAdmin") as HyperLink;
+                rptLink.Visible = true;
+                scnLoad.Visible = true;
+                admn.Visible = true;
+            }
+            else
+            {
+                HyperLink scnLoad = this.Master.FindControl("hypScn") as HyperLink;
+
+                HyperLink rptLink = this.Master.FindControl("hypRpt") as HyperLink;
+
+                HyperLink admn = this.Master.FindControl("hypAdmin") as HyperLink;
+                rptLink.Visible = true;
+                scnLoad.Visible = true;
+                admn.Visible = false;
             }
 
         }
@@ -37,13 +62,17 @@ namespace WebParser
         {
             dvAdditionalScan.Visible = false;
             dvNewScan.Visible = true;
+            var obj = new WebParser.DAL.DataFunction.OperationFunctions();
+           // obj.GetsScanResultByScanId();
+
         }
 
         protected void btnsave_Click(object sender, EventArgs e)
         {
 
             XDocument myDoc = XDocument.Load(fileUpload1.FileContent);
-            XNamespace cm = "http://www.nessus.org/cm";
+
+            XNamespace cm = myDoc.Descendants("Report").First().Attributes().ElementAt(1).Value;
             var dtl = (from r in myDoc.Descendants("ReportItem")
                        select new ImportXMLDataDTO()
                        {
@@ -76,14 +105,15 @@ namespace WebParser
             var obj = new WebParser.DAL.DataFunction.OperationFunctions();
             try
             {
-                bool retValue = obj.ImportXmlData(dtl);
-                if (retValue)
+                ReturnResultDTO retValue = obj.ImportXmlData(dtl);
+                if (retValue.IsSuccess)
                 {
                     lblmessage.Visible = true;
-                    lblmessage.Text = "Import successfull.";
+                    lblmessage.Text = retValue.Message;
                     txtNewScanName.Text = string.Empty;
                     txtDate.Text = string.Empty;
                     txtClientName.Text = string.Empty;
+
 
                 }
                 else
