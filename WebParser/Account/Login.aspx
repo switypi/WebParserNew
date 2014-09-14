@@ -40,27 +40,31 @@
     <asp:UpdatePanel ID="updtlog" runat="server" UpdateMode="Always">
         <ContentTemplate>
 
-            <section id="loginForm">
+            
                 <h2>Use a local account to log in.</h2>
-                <div style="width:20%">
+               <asp:Panel ID="dvNewScan" runat="server" Style="width: 20%">
+
                     <fieldset>
                         <legend>Log in Form</legend>
                         <ol>
                             <li>
                                 <asp:Label ID="Label1" runat="server" AssociatedControlID="UserName">User name</asp:Label>
-                                <asp:TextBox runat="server" ID="UserName" />
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="UserName" CssClass="field-validation-error" ErrorMessage="The user name field is required." />
+                                <span>
+                                     <asp:TextBox runat="server" ID="UserName" />
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" Display="Dynamic" runat="server" ControlToValidate="UserName" CssClass="field-validation-error" ErrorMessage="The user name field is required." />
+                                </span>
+                               
                             </li>
                             <li>
                                 <asp:Label ID="Label2" runat="server" AssociatedControlID="Password">Password</asp:Label>
                                 <asp:TextBox runat="server" ID="Password" TextMode="Password" />
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="Password" CssClass="field-validation-error" ErrorMessage="The password field is required." />
+                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ControlToValidate="Password" CssClass="field-validation-error" ErrorMessage="The password field is required." />
                             </li>
 
                         </ol>
                         <asp:Button ID="Button1" runat="server" OnClick="login_Click" Text="Log in" />
                     </fieldset>
-                </div>
+               </asp:Panel>
 
                 <asp:Label ID="lblErrorMessage" Visible="false" runat="server"></asp:Label>
 
@@ -69,7 +73,7 @@
                     if you don't have an account.
        
                 </p>
-            </section>
+           
         </ContentTemplate>
     </asp:UpdatePanel>
 

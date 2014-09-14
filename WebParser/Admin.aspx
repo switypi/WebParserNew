@@ -14,8 +14,8 @@
 
         <span style="margin-left: 11%">
             <asp:Label Text="Select Option" runat="server"></asp:Label>
-            <asp:DropDownList ID="drpOptionList" OnSelectedIndexChanged="drpOptionList_SelectedIndexChanged" runat="server">
-                <asp:ListItem Text="Generate “New Plugin Data – Regular Scan" Value="1"></asp:ListItem>
+            <asp:DropDownList ID="drpOptionList" OnSelectedIndexChanged="drpOptionList_SelectedIndexChanged" AutoPostBack="true" runat="server">
+                <asp:ListItem Selected="True" Text="Generate “New Plugin Data – Regular Scan" Value="1"></asp:ListItem>
                 <asp:ListItem Text="Generate “New Plugin Data – Compliance Scan" Value="2"></asp:ListItem>
                 <asp:ListItem Text="PluginOutput Variance Report-1 – Regular Scan" Value="3"></asp:ListItem>
                 <asp:ListItem Text="PluginOutput Variance Report-2 – Compliance Scan" Value="4"></asp:ListItem>
@@ -25,8 +25,21 @@
                 <asp:ListItem Text="PluginOutput Variance Report-2" Value="8"></asp:ListItem>
             </asp:DropDownList>
         </span>
-        <div style="margin-left: 11%;margin-top:2%">
-            <asp:Button ID="btnGenerateExcel" Text="Generate" runat="server" OnClick="btnGenerateExcel_Click" />
+        <asp:Panel Style="margin-left: 11%; margin-top: 2%" Visible="false" ID="pnlUpload" runat="server">
+            <span style="margin-left: 11%">
+                <asp:Label ID="lblUploadNewXmlFIle" Text="Upload excel report" runat="server"></asp:Label>
+                <ajaxToolkit:AsyncFileUpload ID="fileUpload1" runat="server" />
+            </span>
+        </asp:Panel>
+        <div style="margin-left: 11%; margin-top: 2%">
+            <span>
+                <asp:Button ID="btnGenerateExcel" Visible="true" Text="Generate" runat="server" OnClick="btnGenerateExcel_Click" />
+                <asp:Button ID="btnUpload" Text="Upload" Visible="false" runat="server" OnClick="btnUpload_Click" />
+            </span>
+
+        </div>
+        <div>
+            <asp:Label Text="No records" runat="server" Visible="false" ID="lblNoRecords"></asp:Label>
         </div>
 
     </div>

@@ -47,11 +47,14 @@ namespace WebParser.Account
 
                 if (obj.IsAdmin)
                 {
-                    scnLink.Visible = true;
+                    Session["IsAdmin"] = true;
                     Response.Redirect("~/Admin.aspx");
                 }
                 else
+                {
+                    Session["IsAdmin"] = false;
                     Response.Redirect("~/ScanLoad.aspx");
+                }
                 //string continueUrl = RegisterUser.ContinueDestinationPageUrl;
                 //if (!OpenAuth.IsLocalUrl(continueUrl))
                 //{

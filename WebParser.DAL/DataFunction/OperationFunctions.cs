@@ -106,7 +106,7 @@ namespace WebParser.DAL.DataFunction
             return master;
         }
 
-        public List<ScanMasterDTO> GetPreviousScanResult(string userId,string scanId="")
+        public List<ScanMasterDTO> GetPreviousScanResult(string userId, string scanId = "")
         {
             List<ScanMasterDTO> scanMasterList;
 
@@ -127,14 +127,14 @@ namespace WebParser.DAL.DataFunction
             }
             return scanMasterList;
         }
-        public List<ScanMasterDTO> GetsScanResultByScanId(string userId, int scanId )
+        public List<ScanMasterDTO> GetsScanResultByScanId(string userId, int scanId)
         {
             List<ScanMasterDTO> scanMasterList;
 
             using (var context = new WebParser.DAL.DataModel.WebParserEntities())
             {
                 scanMasterList = (from item1 in context.ScanMasters
-                                  where item1.UserId == userId && item1.ScanId==scanId
+                                  where item1.UserId == userId && item1.ScanId == scanId
                                   select item1).ToList().Select(item => new ScanMasterDTO()
                                   {
                                       Id = item.Id,
@@ -201,7 +201,7 @@ namespace WebParser.DAL.DataFunction
             return scanMasterList;
         }
 
-        public List<CurrScanDTO> NewRegularScan(string scanId)
+        public List<CurrScanDTO> NewRegularScan(int scanId)
         {
             List<CurrScanDTO> datalist = new List<CurrScanDTO>();
 
@@ -209,7 +209,7 @@ namespace WebParser.DAL.DataFunction
             {
                 List<int> plugins = context.MasterPlugins.Select(x => x.PluginID).ToList();
 
-                datalist = (from item in context.CurrScans.Where(c => plugins.Contains(c.PluginID) == false && c.Compliance == false)
+                datalist = (from item in context.CurrScans.Where(c => plugins.Contains(c.PluginID) == false && c.Compliance == false && c.ScanID == scanId)
                             orderby item.PluginID
                             select new CurrScanDTO()
                             {
@@ -230,7 +230,7 @@ namespace WebParser.DAL.DataFunction
             return datalist;
         }
 
-        public List<CurrScanDTO> NewComplianceData(string scanId)
+        public List<CurrScanDTO> NewComplianceData(int scanId)
         {
             List<CurrScanDTO> datalist = new List<CurrScanDTO>();
 
@@ -238,7 +238,7 @@ namespace WebParser.DAL.DataFunction
             {
                 List<string> complianceCheckIDList = context.ComplianceMasters.Select(c => c.ComplianceCheckID).ToList();
 
-                datalist = (from item in context.CurrScans.Where(c => complianceCheckIDList.Contains(c.ComplianceCheckID) == false && c.Compliance != true)
+                datalist = (from item in context.CurrScans.Where(c => complianceCheckIDList.Contains(c.ComplianceCheckID) == false && c.Compliance != true && c.ScanID == scanId)
                             orderby item.PluginID, item.ComplianceCheckID
                             select new CurrScanDTO()
                             {
@@ -254,10 +254,8 @@ namespace WebParser.DAL.DataFunction
             return datalist;
         }
 
-        public List<CurrScanDTO> NewPluginOutputVarianceFirst(string scanId)
+        public List<CurrScanDTO> NewPluginOutputVarianceFirst(int scanId)
         {
-
-
 
             List<CurrScanDTO> datalist = new List<CurrScanDTO>();
 
@@ -265,9 +263,12 @@ namespace WebParser.DAL.DataFunction
             {
                 List<MasterPlugin> masterPlugindata = context.MasterPlugins.Where(v => v.PluginOutputReportable == true).ToList();
 
-                datalist = (from item in context.CurrScans
+                List<int> plgIds = masterPlugindata.Select(c => c.PluginID).ToList();
+                List<CurrScan> crsData = context.CurrScans.Where(c => plgIds.Contains(c.PluginID) && c.Compliance == false && c.ScanID == scanId).ToList();
+
+                datalist = (from item in crsData
                             join plg in masterPlugindata on item.PluginID equals plg.PluginID
-                            where item.PluginOutput != plg.PluginOutPut && item.Compliance == false
+                            where item.PluginOutput != (plg.PluginOutPut == null ? string.Empty : plg.PluginOutPut)
                             orderby item.PluginID
                             select new CurrScanDTO()
                             {
@@ -282,17 +283,19 @@ namespace WebParser.DAL.DataFunction
             return datalist;
         }
 
-        public List<CurrScanDTO> NewPluginOutputVarianceSecond(string scanId)
+        public List<CurrScanDTO> NewPluginOutputVarianceSecond(int scanId)
         {
             List<CurrScanDTO> datalist = new List<CurrScanDTO>();
 
             using (var context = new WebParser.DAL.DataModel.WebParserEntities())
             {
                 List<MasterPlugin> masterPlugindata = context.MasterPlugins.Where(v => v.PluginOutputReportable == true).ToList();
+                List<int> plgIds = masterPlugindata.Select(c => c.PluginID).ToList();
+                List<CurrScan> crsData = context.CurrScans.Where(c => plgIds.Contains(c.PluginID) && c.Compliance == false && c.ScanID == scanId).ToList();
 
-                datalist = (from item in context.CurrScans
+                datalist = (from item in crsData
                             join plg in masterPlugindata on item.PluginID equals plg.PluginID
-                            where item.PluginOutput != plg.PluginOutPut && item.Compliance ==true
+                            where item.PluginOutput != (plg.PluginOutPut == null ? string.Empty : plg.PluginOutPut)
                             orderby item.PluginID
                             select new CurrScanDTO()
                             {
@@ -306,5 +309,146 @@ namespace WebParser.DAL.DataFunction
             }
             return datalist;
         }
+
+        public ReturnResultDTO UpdateMasterPluginData(List<MasterPluginDTO> input)
+        {
+            //List<int> pluginIds=input.Select(c=>c.
+            ReturnResultDTO dt = new ReturnResultDTO();
+            try
+            {
+                using (var context = new WebParserEntities())
+                {
+                    input.ForEach(c =>
+                    {
+                        var data = context.MasterPlugins.FirstOrDefault(v => v.PluginID == c.PluginId);
+                        if (data != null)
+                        {
+                            data.Description = c.Description;
+                            data.Synopsis = c.Synopsis;
+                            data.PluginOutPut = c.PluginOutPut;
+                            data.RiskFactor = c.Riskfactor;
+                            data.PluginOutputReportable = c.PluginOutPutReportable;
+                            data.Reportable = c.Reportable;
+                            data.Solution = c.Solution;
+                        }
+                    });
+                    context.SaveChanges();
+                    dt.Message = "Update successfull.";
+                    dt.IsSuccess = true;
+                    return dt;
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public ReturnResultDTO UpdateMasterCompliance(List<MasterComplianceDTO> input)
+        {
+            //List<int> pluginIds=input.Select(c=>c.
+            ReturnResultDTO dt = new ReturnResultDTO();
+            try
+            {
+                using (var context = new WebParserEntities())
+                {
+                    input.ForEach(c =>
+                    {
+                        var data = context.ComplianceMasters.FirstOrDefault(v => v.PluginId == c.PluginId);
+                        if (data != null)
+                        {
+
+                            data.Description = c.Description;
+                            data.Reportable = c.Reportable;
+                            data.RiskFactor = c.Riskfactor;
+                            data.Category1 = c.Category1;
+                            data.Category2 = c.Category2;
+
+                        }
+                    });
+                    context.SaveChanges();
+                    dt.Message = "Update successfull.";
+                    dt.IsSuccess = true;
+                    return dt;
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            //}
+        }
+
+        public ReturnResultDTO UpdatePluginVariance1(List<MasterPluginDTO> input)
+        {
+            //List<int> pluginIds=input.Select(c=>c.
+            ReturnResultDTO dt = new ReturnResultDTO();
+            try
+            {
+                using (var context = new WebParserEntities())
+                {
+                    input.ForEach(c =>
+                    {
+                        var data = context.CurrScans.FirstOrDefault(v => v.PluginID == c.PluginId);
+                        if (data != null)
+                        {
+
+                            data.PluginOutputReportable = c.PluginOutPutReportable;
+
+                        }
+                    });
+                    context.SaveChanges();
+                    dt.Message = "Update successfull.";
+                    dt.IsSuccess = true;
+                    return dt;
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public ReturnResultDTO UpdatePluginVariance2(List<MasterPluginDTO> input)
+        {
+            //List<int> pluginIds=input.Select(c=>c.
+            ReturnResultDTO dt = new ReturnResultDTO();
+            try
+            {
+                using (var context = new WebParserEntities())
+                {
+                    input.ForEach(c =>
+                    {
+                        var data = context.CurrScans.FirstOrDefault(v => v.PluginID == c.PluginId && v.ComplianceCheckID == c.ComplianceCheckID);
+                        if (data != null)
+                        {
+
+                            data.PluginOutputReportable = c.PluginOutPutReportable;
+
+                        }
+                    });
+                    context.SaveChanges();
+                    dt.Message = "Update successfull.";
+                    dt.IsSuccess = true;
+                    return dt;
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
     }
 }

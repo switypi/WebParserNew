@@ -81,6 +81,8 @@
     <Compile Include="Model\CurrScanDTO.cs" />
     <Compile Include="Model\ImportXMLDataDTO.cs" />
     <Compile Include="Model\LoginDTO.cs" />
+    <Compile Include="Model\MasterComplianceDTO.cs" />
+    <Compile Include="Model\MasterPluginDTO.cs" />
     <Compile Include="Model\ReturnResultDTO.cs" />
     <Compile Include="Model\ScanMasterDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
