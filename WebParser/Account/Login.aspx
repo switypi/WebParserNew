@@ -39,51 +39,48 @@
 
     <asp:UpdatePanel ID="updtlog" runat="server" UpdateMode="Always">
         <ContentTemplate>
+            <asp:Panel ID="dvNewScan" runat="server" Style="width: 20%">
 
-            
-                <h2>Use a local account to log in.</h2>
-               <asp:Panel ID="dvNewScan" runat="server" Style="width: 20%">
+                <fieldset>
+                    <legend>Log in Form</legend>
+                    <ol>
+                        <li>
+                            <asp:Label ID="Label1" runat="server" AssociatedControlID="UserName">User name</asp:Label>
 
-                    <fieldset>
-                        <legend>Log in Form</legend>
-                        <ol>
-                            <li>
-                                <asp:Label ID="Label1" runat="server" AssociatedControlID="UserName">User name</asp:Label>
-                                <span>
-                                     <asp:TextBox runat="server" ID="UserName" />
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" Display="Dynamic" runat="server" ControlToValidate="UserName" CssClass="field-validation-error" ErrorMessage="The user name field is required." />
-                                </span>
-                               
-                            </li>
-                            <li>
-                                <asp:Label ID="Label2" runat="server" AssociatedControlID="Password">Password</asp:Label>
-                                <asp:TextBox runat="server" ID="Password" TextMode="Password" />
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ControlToValidate="Password" CssClass="field-validation-error" ErrorMessage="The password field is required." />
-                            </li>
+                            <asp:TextBox runat="server" ID="UserName" />
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" Display="Dynamic" runat="server" ControlToValidate="UserName" CssClass="field-validation-error" ErrorMessage="The user name field is required." />
 
-                        </ol>
-                        <asp:Button ID="Button1" runat="server" OnClick="login_Click" Text="Log in" />
-                    </fieldset>
-               </asp:Panel>
 
-                <asp:Label ID="lblErrorMessage" Visible="false" runat="server"></asp:Label>
+                        </li>
+                        <li>
+                            <asp:Label ID="Label2" runat="server" AssociatedControlID="Password">Password</asp:Label>
+                            <asp:TextBox runat="server" ID="Password" TextMode="Password" />
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" Display="Dynamic" ControlToValidate="Password" CssClass="field-validation-error" ErrorMessage="The password field is required." />
+                        </li>
 
-                <p>
-                    <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register</asp:HyperLink>
-                    if you don't have an account.
+                    </ol>
+                    <asp:Button ID="Button1" runat="server" OnClick="login_Click" Text="Log in" />
+                </fieldset>
+            </asp:Panel>
+
+            <asp:Label ID="lblErrorMessage" Visible="false" runat="server"></asp:Label>
+
+            <p>
+                <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register</asp:HyperLink>
+                if you don't have an account.
        
-                </p>
-           
+            </p>
+
         </ContentTemplate>
     </asp:UpdatePanel>
 
     <asp:UpdateProgress ID="updProgress"
         AssociatedUpdatePanelID="updtlog"
         runat="server">
-         <ProgressTemplate>
+        <ProgressTemplate>
             <div class="overlay" />
             <div class="overlayContent">
-                <asp:Image ID="Image1" runat="server"   ImageUrl="~/Images/ImgLoader.gif" />
+                <asp:Image ID="Image1" runat="server" ImageUrl="~/Images/ImgLoader.gif" />
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>

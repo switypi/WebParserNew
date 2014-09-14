@@ -1,5 +1,5 @@
 ﻿html {
-    background-color: #e2e2e2;
+    background-color: #efeeef;
     margin: 0;
     padding: 0;
 }
@@ -104,14 +104,14 @@ h5, h6 {
 }
 
     .main-content {
-        background: url("../Images/accent.png") no-repeat;
+        /*background: url("../Images/accent.png") no-repeat;*/
         padding-left: 10px;
         padding-top: 30px;
     }
 
-    .featured + .main-content {
+    /*.featured + .main-content {
         background: url("../Images/heroAccent.png") no-repeat;
-    }
+    }*/
 
 header .content-wrapper {
     padding-top: 20px; 
@@ -393,7 +393,8 @@ fieldset {
     label {
         display: block;
         font-size: 1.2em;
-        font-weight: 600;
+        font-weight:bold;
+        
     }
 
     label.checkbox {

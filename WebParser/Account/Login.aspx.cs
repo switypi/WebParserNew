@@ -63,7 +63,7 @@ namespace WebParser.Account
                 
                 if (!obj.IsAdmin)
                 {
-                    Session["IsAdmin"] = true;
+                    Session["IsAdmin"] = false;
                     Response.Redirect("~/ScanLoad.aspx");
                
                    

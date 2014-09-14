@@ -5,7 +5,7 @@
 <html lang="en">
 <head runat="server">
     <meta charset="utf-8" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title><%: Page.Title %> - Web Parser</title>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
@@ -86,13 +86,13 @@
             </section>
 
         </div>
-        <footer>
+        <%--<footer>
             <div class="content-wrapper">
                 <div class="float-left">
                     <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
                 </div>
             </div>
-        </footer>
+        </footer>--%>
     </form>
 </body>
 </html>
