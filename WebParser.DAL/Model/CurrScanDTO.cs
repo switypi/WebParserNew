@@ -11,7 +11,7 @@ namespace WebParser.DAL.Model
     public class CurrScanDTO
     {
         [DataMember]
-        public int PluginId { get; set; }
+        public double PluginId { get; set; }
         [DataMember]
         public string Synopsis { get; set; }
         [DataMember]
@@ -23,6 +23,7 @@ namespace WebParser.DAL.Model
         public string ExploitabilityEase { get; set; }
         [DataMember]
         public bool ExploitedByMalware { get; set; }
+       
         [DataMember]
         public string RiskFactor { get; set; }
         [DataMember]
@@ -33,6 +34,20 @@ namespace WebParser.DAL.Model
         public string PluginOutput { get; set; }
         [DataMember]
         public string ComplianceCheckID { get; set; }
+        [DataMember]
+        public bool PluginOutPutReportable { get; set; }
+        [DataMember]
+        public int Port { get; set; }
+        [DataMember]
+        public string ReportHost { get; set; }
+        [DataMember]
+        public string ComplianceResult { get; set; }
+        [DataMember]
+        public string ComplianceActualValue { get; set; }
+        [DataMember]
+        public string ComplianceOutPut { get; set; }
+        [DataMember]
+        public string CompliancePolicyValue { get; set; }
 
 
     }

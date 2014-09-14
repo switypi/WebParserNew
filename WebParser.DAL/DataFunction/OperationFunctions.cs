@@ -223,6 +223,7 @@ namespace WebParser.DAL.DataFunction
                                 SeeAlso = item.SeeAlso,
                                 Solution = item.Solution,
                                 Synopsis = item.Synopsis,
+                                PluginOutPutReportable = item.PluginOutputReportable,
 
                             }).ToList();
 
@@ -316,13 +317,17 @@ namespace WebParser.DAL.DataFunction
             ReturnResultDTO dt = new ReturnResultDTO();
             try
             {
+                bool isUpdated = false;
+                int plgId = 0;
                 using (var context = new WebParserEntities())
                 {
                     input.ForEach(c =>
                     {
-                        var data = context.MasterPlugins.FirstOrDefault(v => v.PluginID == c.PluginId);
+                        plgId = int.Parse(c.PluginId.ToString());
+                        var data = context.MasterPlugins.FirstOrDefault(v => v.PluginID == plgId);
                         if (data != null)
                         {
+                            isUpdated = true;
                             data.Description = c.Description;
                             data.Synopsis = c.Synopsis;
                             data.PluginOutPut = c.PluginOutPut;
@@ -332,9 +337,17 @@ namespace WebParser.DAL.DataFunction
                             data.Solution = c.Solution;
                         }
                     });
-                    context.SaveChanges();
-                    dt.Message = "Update successfull.";
-                    dt.IsSuccess = true;
+                    if (isUpdated)
+                    {
+                        context.SaveChanges();
+                        dt.Message = "Update successfull.";
+                        dt.IsSuccess = true;
+                    }
+                    else
+                    {
+                        dt.Message = "No matchin plugin found.";
+                        dt.IsSuccess = true;
+                    }
                     return dt;
 
                 }
@@ -351,16 +364,19 @@ namespace WebParser.DAL.DataFunction
         {
             //List<int> pluginIds=input.Select(c=>c.
             ReturnResultDTO dt = new ReturnResultDTO();
+            bool isUpdated = false;
             try
             {
+                int plgId = 0;
                 using (var context = new WebParserEntities())
                 {
                     input.ForEach(c =>
                     {
-                        var data = context.ComplianceMasters.FirstOrDefault(v => v.PluginId == c.PluginId);
+                        plgId = int.Parse(c.PluginId.ToString());
+                        var data = context.ComplianceMasters.FirstOrDefault(v => v.PluginId == plgId);
                         if (data != null)
                         {
-
+                            isUpdated = true;
                             data.Description = c.Description;
                             data.Reportable = c.Reportable;
                             data.RiskFactor = c.Riskfactor;
@@ -369,9 +385,17 @@ namespace WebParser.DAL.DataFunction
 
                         }
                     });
-                    context.SaveChanges();
-                    dt.Message = "Update successfull.";
-                    dt.IsSuccess = true;
+                    if (isUpdated)
+                    {
+                        context.SaveChanges();
+                        dt.Message = "Update successfull.";
+                        dt.IsSuccess = true;
+                    }
+                    else
+                    {
+                        dt.Message = "No matchin plugin found.";
+                        dt.IsSuccess = true;
+                    }
                     return dt;
 
                 }
@@ -388,23 +412,34 @@ namespace WebParser.DAL.DataFunction
         {
             //List<int> pluginIds=input.Select(c=>c.
             ReturnResultDTO dt = new ReturnResultDTO();
+            bool isUpdated = false;
             try
             {
+                int plgId = 0;
                 using (var context = new WebParserEntities())
                 {
                     input.ForEach(c =>
                     {
-                        var data = context.CurrScans.FirstOrDefault(v => v.PluginID == c.PluginId);
+                        plgId = int.Parse(c.PluginId.ToString());
+                        var data = context.CurrScans.FirstOrDefault(v => v.PluginID == plgId);
                         if (data != null)
                         {
-
+                            isUpdated = true;
                             data.PluginOutputReportable = c.PluginOutPutReportable;
 
                         }
                     });
-                    context.SaveChanges();
-                    dt.Message = "Update successfull.";
-                    dt.IsSuccess = true;
+                    if (isUpdated)
+                    {
+                        context.SaveChanges();
+                        dt.Message = "Update successfull.";
+                        dt.IsSuccess = true;
+                    }
+                    else
+                    {
+                        dt.Message = "No matchin plugin found.";
+                        dt.IsSuccess = true;
+                    }
                     return dt;
 
                 }
@@ -421,23 +456,34 @@ namespace WebParser.DAL.DataFunction
         {
             //List<int> pluginIds=input.Select(c=>c.
             ReturnResultDTO dt = new ReturnResultDTO();
+            bool isUpdated = false;
+            int plgId = 0;
             try
             {
                 using (var context = new WebParserEntities())
                 {
                     input.ForEach(c =>
                     {
-                        var data = context.CurrScans.FirstOrDefault(v => v.PluginID == c.PluginId && v.ComplianceCheckID == c.ComplianceCheckID);
+                        plgId = int.Parse(c.PluginId.ToString());
+                        var data = context.CurrScans.FirstOrDefault(v => v.PluginID == plgId && v.ComplianceCheckID == c.ComplianceCheckID);
                         if (data != null)
                         {
-
+                            isUpdated = true;
                             data.PluginOutputReportable = c.PluginOutPutReportable;
 
                         }
                     });
-                    context.SaveChanges();
-                    dt.Message = "Update successfull.";
-                    dt.IsSuccess = true;
+                    if (isUpdated)
+                    {
+                        context.SaveChanges();
+                        dt.Message = "Update successfull.";
+                        dt.IsSuccess = true;
+                    }
+                    else
+                    {
+                        dt.Message = "No matchin plugin found.";
+                        dt.IsSuccess = true;
+                    }
                     return dt;
 
                 }
@@ -448,6 +494,60 @@ namespace WebParser.DAL.DataFunction
                 throw;
             }
 
+        }
+
+        public List<CurrScanDTO> GenerateRegularScanReport(int scanId)
+        {
+            using (var context = new WebParserEntities())
+            {
+                List<CurrScanDTO> data = (from item in context.MasterPlugins
+                                          join curr in context.CurrScans on item.PluginID equals curr.PluginID
+                                          where item.Reportable == true && curr.Compliance == false && curr.ScanID == scanId
+                                          orderby item.RiskFactor, item.Category1, item.Category2, item.Category3
+                                          select new CurrScanDTO()
+                                          {
+                                              Synopsis=item.Synopsis,
+                                              Description=item.Description,
+                                              RiskFactor=item.RiskFactor,
+                                              Solution=item.Solution,
+                                              Port=curr.Port,
+                                              ReportHost=curr.ReportHost
+                                              
+                                          }).ToList();
+                return data;
+            }
+        }
+
+        public List<CurrScanDTO> GenerateComplianceScanReport(int scanId)
+        {
+            using (var context = new WebParserEntities())
+            {
+                List<CurrScanDTO> data = (from item in context.ComplianceMasters
+                                          join curr in context.CurrScans on item.PluginId equals curr.PluginID
+                                          where item.Reportable == true && curr.Compliance ==true && curr.ScanID == scanId && item.ComplianceCheckID==curr.ComplianceCheckID
+                                          orderby item.RiskFactor, item.Category1, item.Category2, item.Category3
+                                          select new CurrScanDTO()
+                                          {
+                                              ComplianceCheckID = curr.ComplianceCheckID,
+
+                                              Description = item.Description,
+                                              RiskFactor = item.RiskFactor,
+                                              Port = curr.Port,
+                                              ReportHost = curr.ReportHost,
+                                              PluginOutput=curr.PluginOutput,
+                                              ComplianceActualValue=curr.ComplianceActualValue,
+                                              ComplianceOutPut=curr.ComplianceOutput,
+                                              CompliancePolicyValue=curr.CompliancePolicyValue,
+                                              ComplianceResult=curr.ComplianceResult
+
+                                          }).ToList();
+                return data;
+            }
+        }
+
+        public void GenerateVulnerabilityScanReport(int scanId)
+        {
+           
         }
 
     }

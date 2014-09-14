@@ -131,7 +131,15 @@ namespace WebParser
                 {
                     var indexOfItem = List.ElementAt(0).GetType().GetProperties().ToList().IndexOf(col);
                     var value = typeof(CurrScanDTO).GetProperty(col.Name).GetValue(itemRow, null);
+
                     worksheet.Cell(rowIndex + 1, indexOfItem + 1).Value = value == null ? null : (value.ToString().Count() >= 32000 ? value.ToString().Substring(0, 32000) : value);
+                    if (col.Name == "PluginId")
+                    {
+                        worksheet.Cell(rowIndex + 1, indexOfItem + 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                        worksheet.Cell(rowIndex + 1, indexOfItem + 1).DataType = XLCellValues.Number;
+                        worksheet.Cell(rowIndex + 1, indexOfItem + 1).Style.NumberFormat.NumberFormatId = 1;
+
+                    }
                 }
             }
             // Prepare the response
@@ -167,7 +175,8 @@ namespace WebParser
             DataSet result;
             List<MasterPluginDTO> ItemList;
             List<MasterComplianceDTO> complianceDTO;
-            List<int> pluginIds;
+            List<double> pluginIds;
+            ReturnResultDTO retDto;
             switch (int.Parse(drpOptionList.SelectedValue))
             {
 
@@ -191,7 +200,9 @@ namespace WebParser
                         pluginIds = pluginIds.Distinct().ToList();
                         ItemList = ItemList.Where(c => pluginIds.Contains(c.PluginId)).GroupBy(c => c.PluginId).Select(v => v.First()).ToList();
                         var obj = new WebParser.DAL.DataFunction.OperationFunctions();
-                        obj.UpdateMasterPluginData(ItemList);
+                        retDto = obj.UpdateMasterPluginData(ItemList);
+                        lblNoRecords.Visible = true;
+                        lblNoRecords.Text = retDto.Message;
 
                     }
                     break;
@@ -209,8 +220,9 @@ namespace WebParser
                     pluginIds = pluginIds.Distinct().ToList();
                     complianceDTO = complianceDTO.Where(c => pluginIds.Contains(c.PluginId)).GroupBy(c => new { c.ComplianceCheckID, c.PluginId }).Select(v => v.First()).ToList();
                     var objCon = new WebParser.DAL.DataFunction.OperationFunctions();
-                    objCon.UpdateMasterCompliance(complianceDTO);
-
+                    retDto = objCon.UpdateMasterCompliance(complianceDTO);
+                    lblNoRecords.Visible = true;
+                    lblNoRecords.Text = retDto.Message;
 
                     break;
                 case 7:
@@ -224,7 +236,7 @@ namespace WebParser
                     ItemList = result.Tables[0].AsEnumerable().Select(s => new MasterPluginDTO()
                          {
                              PluginOutPutReportable = s.Field<bool>("PluginOutputReportable"),
-                             PluginId = s.Field<int>("PluginId"),
+                             PluginId = s.Field<double>("PluginId"),
                          }).ToList();
 
 
@@ -232,7 +244,9 @@ namespace WebParser
                     pluginIds = pluginIds.Distinct().ToList();
                     ItemList = ItemList.Where(c => pluginIds.Contains(c.PluginId)).GroupBy(c => c.PluginId).Select(v => v.First()).ToList();
                     var objdataCon = new WebParser.DAL.DataFunction.OperationFunctions();
-                    objdataCon.UpdatePluginVariance1(ItemList);
+                    retDto = objdataCon.UpdatePluginVariance1(ItemList);
+                    lblNoRecords.Visible = true;
+                    lblNoRecords.Text = retDto.Message;
                     break;
                 case 8:
                     columnNmaes = new List<string>();
@@ -245,7 +259,7 @@ namespace WebParser
                         {
                             PluginOutPutReportable = s.Field<bool>("PluginOutputReportable"),
                             ComplianceCheckID = s.Field<string>("ComplianceCheckID"),
-                            PluginId = s.Field<int>("PluginId"),
+                            PluginId = s.Field<double>("PluginId"),
                         }).ToList();
 
 
@@ -253,18 +267,24 @@ namespace WebParser
                     pluginIds = pluginIds.Distinct().ToList();
                     ItemList = ItemList.Where(c => pluginIds.Contains(c.PluginId)).GroupBy(c => new { c.ComplianceCheckID, c.PluginId }).Select(v => v.First()).ToList();
                     var objdataConection = new WebParser.DAL.DataFunction.OperationFunctions();
-                    objdataConection.UpdatePluginVariance2(ItemList);
+                    retDto = objdataConection.UpdatePluginVariance2(ItemList);
+                    lblNoRecords.Visible = true;
+                    lblNoRecords.Text = retDto.Message;
                     break;
             }
         }
 
         private DataSet ValidateColumnInSheet(List<string> columnNmaes)
         {
+            DataSet result = new DataSet();
             FileStream stream = File.Open(fileUpload1.PostedFile.FileName, FileMode.Open, FileAccess.Read);
 
             IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
             excelReader.IsFirstRowAsColumnNames = true;
-            DataSet result = excelReader.AsDataSet();
+
+            result = excelReader.AsDataSet();
+
+
             foreach (string col in columnNmaes)
             {
                 int index = columnNmaes.IndexOf(col);

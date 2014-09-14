@@ -11,7 +11,7 @@ namespace WebParser.DAL.Model
     public class MasterComplianceDTO
     {
         [DataMember]
-        public int PluginId { get; set; }
+        public double PluginId { get; set; }
         [DataMember]
         public string ComplianceCheckID { get; set; }
         [DataMember]

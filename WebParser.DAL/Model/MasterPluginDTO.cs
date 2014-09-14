@@ -11,7 +11,7 @@ namespace WebParser.DAL.Model
     public class MasterPluginDTO
     {
         [DataMember]
-        public int PluginId { get; set; }
+        public double PluginId { get; set; }
         [DataMember]
         public string Synopsis { get; set; }
         [DataMember]

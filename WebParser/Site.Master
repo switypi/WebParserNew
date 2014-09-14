@@ -70,10 +70,10 @@
                     <asp:HyperLink ID="hypScn" Visible="false" NavigateUrl="~/ScanLoad.aspx" runat="server" Text="Scan Load"></asp:HyperLink>
                 </span>
                 <span >
-                    <asp:HyperLink ID="hypRpt" Visible="false" runat="server" Text="Report"></asp:HyperLink>
+                    <asp:HyperLink ID="hypRpt" Visible="false" runat="server" NavigateUrl="~/Report.aspx" Text="Report"></asp:HyperLink>
                 </span>
                 <span>
-                    <asp:HyperLink ID="hypAdmin" Visible="false" runat="server" Text="Admin"></asp:HyperLink>
+                    <asp:HyperLink ID="hypAdmin" Visible="false" runat="server" NavigateUrl="~/Admin.aspx" Text="Admin"></asp:HyperLink>
                 </span>
             </div>
         </header>
