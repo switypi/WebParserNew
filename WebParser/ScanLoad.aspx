@@ -28,6 +28,7 @@
 
         }
         function gridRowOnclick(ctrlId) {
+            alert(ctrlId)
             var retVal = confirm("Do you want to continue ?");
             if (retVal == true) {
                 __doPostBack(ctrlId, 'FROMBTN')
@@ -89,7 +90,7 @@
                         </td>
                         <td align="center">
                             <asp:Label ID="Label1" runat="server">Additional Scan</asp:Label>
-                            <asp:RadioButton runat="server" AutoPostBack="true" OnCheckedChanged="AddtionalScan_CheckedChanged" GroupName="scanGroup" />
+                            <asp:RadioButton runat="server" ID="rdbtnAddtional" AutoPostBack="true" OnCheckedChanged="AddtionalScan_CheckedChanged" GroupName="scanGroup" />
                         </td>
                     </tr>
                 </table>
@@ -135,13 +136,14 @@
 
             <asp:Panel ID="dvAdditionalScan" runat="server">
                 <asp:GridView runat="server" GridLines="Vertical" ID="grdScanList"
-                    OnRowDataBound="grdScanList_RowDataBound"  OnSelectedIndexChanged="grdScanList_SelectedIndexChanged" AutoGenerateColumns="False" BackColor="White" BorderColor="#DEDFDE" BorderStyle="None" BorderWidth="1px" CaptionAlign="Left" CellPadding="4" ForeColor="Black">
+                    OnRowDataBound="grdScanList_RowDataBound" OnRowEditing="grdScanList_RowEditing"  OnSelectedIndexChanged="grdScanList_SelectedIndexChanged" AutoGenerateColumns="False" BackColor="White" BorderColor="#DEDFDE" BorderStyle="None" BorderWidth="1px" CaptionAlign="Left" CellPadding="4" ForeColor="Black">
                     <Columns>
                         <asp:BoundField HeaderText="Scan Id" DataField="ScanID" />
                         <asp:BoundField HeaderText="Scan Name" DataField="ScanName" />
                         <asp:BoundField HeaderText="Scan Date" DataField="ScanDate" />
                         <asp:BoundField HeaderText="Client Name" DataField="ClientName" />
-                        <asp:CommandField ShowSelectButton="true" ButtonType="Button" />
+                        
+                        <asp:CommandField ShowEditButton="true" EditText="Select" ButtonType="Button" />
                     </Columns>
 
                 </asp:GridView>

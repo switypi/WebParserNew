@@ -63,8 +63,12 @@ namespace WebParser
             dvAdditionalScan.Visible = false;
             dvNewScan.Visible = true;
             var obj = new WebParser.DAL.DataFunction.OperationFunctions();
-           // obj.GetsScanResultByScanId();
-
+            var dtoItem = obj.GetsScanResultByScanId(Session["UserName"] as string, int.Parse(((System.Web.UI.WebControls.TableRow)(grdScanList.SelectedRow)).Cells[0].Text));
+            if (dtoItem.Count > 0)
+            {
+                txtClientName.Text = dtoItem.First().ClientName;
+                txtNewScanName.Text = dtoItem.First().ScanName;
+            }
         }
 
         protected void btnsave_Click(object sender, EventArgs e)
@@ -80,7 +84,7 @@ namespace WebParser
                            ClientName = txtClientName.Text,
                            ScanDate = DateTime.Parse(txtDate.Text),
                            ScanName = txtNewScanName.Text,
-                           IsAdditionalScan = false,
+                           IsAdditionalScan = rdbtnAddtional.Checked,
                            UserId = Session["UserName"] as string,
                            PlugId = r.Attribute("pluginID").Value,
                            Port = r.Attribute("port") == null ? null : r.Attribute("port").Value,
@@ -188,17 +192,17 @@ namespace WebParser
             //wire up the required html events and attach the relevant JavaScripts
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                string id = e.Row.Cells[0].Text; // Get the id to be deleted
-                //cast the ShowDeleteButton link to linkbutton
-                Button lb = (Button)e.Row.Cells[4].Controls[0];
-                if (lb != null)
-                {
-                    //attach the JavaScript function with the ID as the paramter
-                    lb.Click += lb_Click;
-                    lb.Attributes.Add("onclick", "return gridRowOnclick('" + lb.ClientID + "');");
-                }
-                //e.Row.Attributes["onclick"] =
-                //    "javascript:gridRowOnclick(this);";
+                //string id = e.Row.Cells[0].Text; // Get the id to be deleted
+                ////cast the ShowDeleteButton link to linkbutton
+                //Button lb = (Button)e.Row.Cells[4].Controls[0];
+                //if (lb != null)
+                //{
+                //    //attach the JavaScript function with the ID as the paramter
+                //    lb.Click += lb_Click;
+                //    lb.Attributes.Add("onclick", "return gridRowOnclick('" + lb.ClientID + "');");
+                //}
+                ////e.Row.Attributes["onclick"] =
+                ////    "javascript:gridRowOnclick(this);";
             }
         }
 
@@ -210,6 +214,18 @@ namespace WebParser
         protected void btn1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        protected void grdScanList_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            (sender as GridView).SelectedIndex = e.NewEditIndex;
+            Button lb = (Button)(sender as GridView).Rows[e.NewEditIndex].Cells[4].Controls[0];
+            if (lb != null)
+            {
+                //attach the JavaScript function with the ID as the paramter
+                lb.Click += lb_Click;
+                lb.Attributes.Add("onclick", "return gridRowOnclick('" + lb.ClientID + "');");
+            }
         }
 
     }
